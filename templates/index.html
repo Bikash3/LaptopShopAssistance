@@ -1,0 +1,69 @@
+<html> 
+    <head>
+        <title> ShopAssist </title>
+        <link rel="stylesheet" type="text/css" href="/static/css/styles.css/"
+    </head>
+    <body>
+        <div class="outercontainer">
+            <div class = "center">
+                <h1 id="titlestyle">
+                    Laptop ShopAssist
+                </h1>
+            </div>
+            <div class = "conversationcontainer" id = chatcontainer>
+                {% for entry in name_xyz %}
+                <div class = "{% if entry.bot %}bot{% else %}user{% endif %}">
+                    {% if entry.bot %}
+                    {{entry.bot|safe}}
+                    {% else %}
+                    {{entry.user}}
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <form action = '/invite' method="post" class="center" id="chatForm">
+                <input type="text" name="user_input_message" id="inputtextbox" required="true">
+                <button type="submit" id="submitbutton">SUBMIT</button>
+
+            </form>
+
+            <form action="/end_conv" method="post" class="center" id="endForm">
+                <button type="submit" id="endbutton">END CONVERSATION</button>
+            </form>
+        </div>
+        <div id="loader">
+            <div class="loader-background">
+                <div class="spinner"></div>
+                <div class="prces">Processing, please wait...</div>
+            </div>
+        </div>
+        <script>
+            function scrollToBottom() {
+                var chatContainer = document.getElementById('chatcontainer')
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+            
+            // disable input and buttons on form submit
+            document.getElementById('chatForm').onsubmit = function() {
+                document.getElementById('submitbutton').disabled = true;
+                document.getElementById('endbutton').disabled = true;
+                document.getElementById('loader').style.display = 'block'; // Show loader
+                return true; // Allow form submission to proceed
+            };
+             document.getElementById('endForm').onsubmit = function() {
+                document.getElementById('submitbutton').disabled = true;
+                document.getElementById('endbutton').disabled = true;
+                document.getElementById('loader').style.display = 'block'; // Show loader
+                return true; // Allow form submission to proceed
+            };
+            // Re-enable on page load (after response)
+            window.onload = function() {
+                scrollToBottom();
+                document.getElementById('submitbutton').disabled = false;
+                document.getElementById('endbutton').disabled = false;
+                document.getElementById('inputtextbox').focus();
+            }
+        </script>
+    </body>
+</html>
